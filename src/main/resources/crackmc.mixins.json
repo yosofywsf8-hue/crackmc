@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "dev.crackmc.mod.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "IntegratedServerMixin",
+    "ServerLoginNetworkHandlerMixin",
+    "PlayerManagerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}
