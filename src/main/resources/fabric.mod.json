@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "crackmc",
+  "version": "${version}",
+  "name": "CrackMC",
+  "description": "Share LAN/singleplayer worlds with cracked & premium players with built-in tunneling, PIN protection, and host controls.",
+  "authors": ["CrackMC"],
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": ["dev.crackmc.mod.CrackMCMod"],
+    "client": ["dev.crackmc.mod.CrackMCClient"]
+  },
+  "mixins": [
+    "crackmc.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.0",
+    "fabric-api": "*",
+    "minecraft": ">=1.21.1 <=26.3",
+    "java": ">=21"
+  }
+}
