@@ -35,7 +35,7 @@ public class CrackMCMod implements ModInitializer {
 
     @Override
     public void onInitialize() {
-        LOGGER.info("[CrackMC] Initialized (1.21.1 - 26.3 compatibility mode).");
+        LOGGER.info("[CrackMC] Initialized targeting 1.21.11.");
 
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
             ServerPlayerEntity player = handler.player;
@@ -45,11 +45,6 @@ public class CrackMCMod implements ModInitializer {
 
             if (bannedNames.contains(name)) {
                 handler.disconnect(Text.literal("Banned from this CrackMC world."));
-                return;
-            }
-
-            if (server.getCurrentPlayerCount() > maxPlayers) {
-                handler.disconnect(Text.literal("CrackMC world is full (" + maxPlayers + " max)."));
                 return;
             }
 
