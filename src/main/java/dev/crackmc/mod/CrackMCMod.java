@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import dev.crackmc.mod.tunnel.TunnelManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -35,6 +36,27 @@ public class CrackMCMod implements ModInitializer {
     @Override
     public void onInitialize() {
         LOGGER.info("[CrackMC] Initialized (1.21.1 - 26.3 compatibility mode).");
+
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            ServerPlayerEntity player = handler.player;
+            if (player == null) return;
+
+            String name = player.getName().getString().toLowerCase(Locale.ROOT);
+
+            if (bannedNames.contains(name)) {
+                handler.disconnect(Text.literal("Banned from this CrackMC world."));
+                return;
+            }
+
+            if (server.getCurrentPlayerCount() > maxPlayers) {
+                handler.disconnect(Text.literal("CrackMC world is full (" + maxPlayers + " max)."));
+                return;
+            }
+
+            if (pinCode != null && !verifiedPinPlayers.contains(name)) {
+                player.sendMessage(Text.literal("[CrackMC] This world is PIN-protected. Use /pin <code> to stay connected."), false);
+            }
+        });
 
         CommandRegistrationCallback.EVENT.register((dispatcher, registryAccess, environment) -> {
             dispatcher.register(CommandManager.literal("crackmc")
